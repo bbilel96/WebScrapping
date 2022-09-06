@@ -1,0 +1,11 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /
+  static_files: dist/scrapyFront/index.html
+  upload: dist/scrapyFront/index.html
+
+- url: /
+  static_dir: dist/scrapyFront

@@ -1,0 +1,42 @@
+<div class="login-body1">
+<div class="login-wrapper1">
+<div class="login-panel1">
+
+  <ng-container *ngIf="connection == false">
+    <nz-alert nzType="error" nzMessage="Nom d'utilisateur ou mot de passe incorrect"></nz-alert>
+  </ng-container>
+<div class="auth-form-body mt-3">
+
+  <form  nz-form [formGroup]="loginForm"  class="login-form" (ngSubmit)="submit()">
+    <nz-form-item>
+      <nz-form-control [nzErrorTip]="nomErrorTpl">
+        <nz-form-label style="text-align: left"> Nom d'utilisateur</nz-form-label>
+        <nz-input-group nzPrefixIcon="user">
+
+          <input type="text"  nz-input formControlName="_nom" required placeholder="Nom d'utilisateur"/>
+        </nz-input-group>
+
+        <ng-template #nomErrorTpl let-controls>
+          Le nom d'utilisateur est vide !
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzErrorTip]="passwordErrorTpl">
+        <nz-form-label style="text-align: left"> Mot de passe</nz-form-label>
+        <nz-input-group nzPrefixIcon="lock">
+          <input type="password"  nz-input formControlName="_password" placeholder="Mot de passe"/>
+        </nz-input-group>
+        <ng-template #passwordErrorTpl let-controls>
+          Le mot de passe est vide !
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <button nz-button type="submit" class="login-form-button login-form-margin" [nzType]="'primary'">
+      Log in
+    </button>
+  </form>
+</div>
+</div>
+</div>
+</div>

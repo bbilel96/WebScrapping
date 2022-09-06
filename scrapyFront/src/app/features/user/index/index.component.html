@@ -1,0 +1,149 @@
+
+  <div class="inner-content">
+    <ng-container *ngIf="this.error == true">
+      <nz-result nzStatus="500" nzTitle="500" nzSubTitle="Le serveur ne répond pas, merci d'essayer plus tard.">
+      </nz-result>
+    </ng-container>
+    <ng-container *ngIf="this.load == false">
+    <nz-divider nzOrientation="center" nzText="Liste des produits"></nz-divider>
+
+
+
+    <div class="split">
+      <div class="col1">
+        <nz-input-group class="search-button" [nzSuffix]="suffixIconSearch">
+          <input (keyup)="filter_search($event)" type="text" nz-input placeholder="Recherche par produit"/>
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon nzType="search"></i>
+        </ng-template>
+      </div>
+      <div class="col2">
+        <button nz-button nzType="primary" (click)="DownloadExcel()">
+          Télecharger
+          <i nz-icon nzType="download" nzTheme="outline"></i>
+        </button>
+      </div>
+    </div>
+
+
+
+
+
+      <!-- <nz-table #nzTable
+                nzShowSizeChanger
+                [nzData]="displayData"
+                nzTableLayout="fixed"
+                (nzCurrentPageDataChange)="currentPageDataChange($event)"
+                (nzPageIndexChange)="refreshStatus()"
+                (nzPageSizeChange)="refreshStatus()"
+                style="margin-left:10px;margin-right: 10px;">
+        <thead>
+        <tr>
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
+              (nzCheckedChange)="checkAll($event)"></th>
+          <th>
+            Nom article
+          </th>
+          <th *ngFor="let data of this.listOfSite">
+            {{data}}
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of nzTable.data">
+          <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
+          <td>
+            {{data.name}}
+          </td>
+          <ng-container *ngFor="let site of listOfSite">
+            <ng-container *ngIf="verif(data.site,site) != undefined">
+              <ng-container *ngIf="verif(data.site,site).price != '0 TND'; else print0">
+                <td>
+
+                    <a [href]="verif(data.site,site).productUrl" target="_blank" rel="noopener noreferrer">{{verif(data.site,site).price}}</a>
+
+                    <br>
+                  <ng-container *ngIf="verif(data.site,site).stock == true">
+                    <nz-tag style="position: absolute;right: 5px;bottom: 5px;" [nzColor]="'green'">En stock</nz-tag>
+                  </ng-container>
+                  <ng-container *ngIf="verif(data.site,site).stock == false">
+                    <nz-tag style="position: absolute;right: 5px;bottom: 5px;" [nzColor]="'red'">Stock indisponible
+                    </nz-tag>
+                  </ng-container>
+                  <ng-container *ngIf="verif(data.site,site).stock == undefined">
+                    <nz-tag style="position: absolute;right: 5px;bottom: 5px;" [nzColor]="'black'">Inconnu</nz-tag>
+                  </ng-container>
+                </td>
+              </ng-container>
+              <ng-template #print0>
+                <td style="font-size: 15px">Inconnu<br></td>
+              </ng-template>
+            </ng-container>
+            <ng-container *ngIf="verif(data.site,site) == undefined">
+              <td>--</td>
+            </ng-container>
+          </ng-container>
+
+        </tr>
+        </tbody>
+      </nz-table>-->
+      <div class="table-wrapper">
+      <table class="table table-hover" >
+        <thead>
+        <tr>
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
+              (nzCheckedChange)="checkAll($event)"></th>
+          <th>
+            Nom article
+          </th>
+          <th *ngFor="let data of this.listOfSite ">{{data}}</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of displayData | slice:(page - 1) * pageSize:(page-1) * pageSize +pageSize ">
+          <th nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></th>
+          <td >
+            {{data.name}}
+          </td>
+          <ng-container *ngFor="let site of listOfSite ">
+            <ng-container *ngIf="verif(data.site,site) != undefined">
+              <ng-container *ngIf="verif(data.site,site).price != '0 TND'; else print0">
+                <td>
+
+                  <a [href]="verif(data.site,site).productUrl" target="_blank" rel="noopener noreferrer">{{verif(data.site,site).price}}</a>
+
+                  <br>
+                  <ng-container *ngIf="verif(data.site,site).stock == true">
+                    <nz-tag style="float: right" [nzColor]="'green'">En stock</nz-tag>
+                  </ng-container>
+                  <ng-container *ngIf="verif(data.site,site).stock == false">
+                    <nz-tag style="float: right" [nzColor]="'red'">Stock indisponible
+                    </nz-tag>
+                  </ng-container>
+                  <ng-container *ngIf="verif(data.site,site).stock == undefined">
+                    <nz-tag style="float: right" [nzColor]="'black'">Inconnu</nz-tag>
+                  </ng-container>
+                </td>
+              </ng-container>
+              <ng-template #print0>
+                <td style="font-size: 15px">
+                  <a [href]="verif(data.site,site).productUrl" target="_blank" rel="noopener noreferrer">Inconnu</a><br></td>
+              </ng-template>
+            </ng-container>
+            <ng-container *ngIf="verif(data.site,site) == undefined">
+              <td>--</td>
+            </ng-container>
+          </ng-container>
+
+        </tr>
+        </tbody>
+      </table>
+      </div>
+    </ng-container>
+    <ngb-pagination [collectionSize]="displayData.length" [(page)]="page" [maxSize]="2"
+                    [pageSize]="pageSize"  class="d-flex justify-content-center"></ngb-pagination>
+
+  </div>
+
